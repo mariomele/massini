@@ -4,6 +4,9 @@ const fs=require('fs');
 const DAYS=365;
 // q = query Google News; k = parole che devono comparire nel titolo (minuscole, senza accenti); x = esclusioni (omonimi); l = edizioni extra
 const Q={
+zhengchang:{q:"\"Zhengchang\" feed OR \"Zheng Chang\" feed mill OR ZCME",k:["zhengchang","zheng chang","zcme"]},
+boshi:{q:"\"Harbin Boshi\" OR \"Boshi Automation\"",k:["boshi"]},
+huida:{q:"\"Huida Packing\" OR \"Hefei Huida\"",k:["huida"]},
 tavil:{q:"\"Tavil\" packaging OR paletizado OR palletizing",k:["tavil"]},
 ulma:{q:"\"ULMA Packaging\"",k:["ulma"],x:/ulma (construction|forged|handling|architectural|c\.?y\.?e)/i},
 bpa:{q:"\"BluePrint Automation\"",k:["blueprint automation", "bpa"],x:/bisphenol|bonneville|\bBPA-free/i},
