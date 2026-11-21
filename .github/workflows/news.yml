@@ -1,0 +1,31 @@
+# Copiato da public.py in .github/workflows/ del repo pubblico: aggiorna news.json ogni 2 ore
+name: Notizie competitor
+on:
+  schedule:
+    - cron: '17 */2 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+concurrency: news
+jobs:
+  news:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node news.js
+        env:
+          SCRAPECREATORS_API_KEY: ${{ secrets.SCRAPECREATORS_API_KEY }}
+      - name: Salva e ripubblica se ci sono novità
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git diff --quiet news.json && exit 0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -am "Notizie aggiornate $(date -u '+%Y-%m-%d %H:%M') UTC"
+          git push
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
